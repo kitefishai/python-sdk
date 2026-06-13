@@ -1,4 +1,4 @@
-# KiteFishAI Python SDK
+# Python SDK
 
 Official Python SDK for [KiteFishAI](https://kitefishai.com) — sovereign AI models for regulated Indian enterprises.
 
