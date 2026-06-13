@@ -1,11 +1,11 @@
 """
-KiteFishAI SDK — Response Types
+Client SDK — Response Types
 """
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from typing import Any, Iterator, List, Optional
+from dataclasses import dataclass
+from typing import Iterator, List, Optional
 
 
 # ─── Chat Types ────────────────────────────────────────────────────────────────
