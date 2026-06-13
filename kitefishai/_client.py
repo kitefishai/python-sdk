@@ -9,6 +9,7 @@ import httpx
 from typing import Optional
 
 from kitefishai.resources import Chat
+from kitefishai.resources import Embeddings
 from ._exceptions import BaseError, AuthenticationError
 
 
@@ -51,6 +52,7 @@ class Client:
     """
 
     chat: Chat
+    embeddings: Embeddings
 
     def __init__(
         self,
@@ -80,7 +82,7 @@ class Client:
 
         # Resources
         self.chat = Chat(self)
-
+        self.embeddings = Embeddings(self)
 
     def _default_headers(self) -> dict:
         return {
