@@ -88,7 +88,7 @@ class Client:
         return {
             "Authorization": f"Bearer {self.api_key}",
             "Content-Type": "application/json",
-            "User-Agent": f"kitefishai-python/0.1.0",
+            "User-Agent": "kitefishai-python/0.1.0",
             "X-KiteFish-SDK": "python",
         }
 
