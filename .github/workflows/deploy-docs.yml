@@ -1,0 +1,32 @@
+name: Deploy Docs
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "docs/**"
+      - ".github/workflows/deploy-docs.yml"
+
+jobs:
+  deploy:
+    name: Deploy to Mintlify
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # Mintlify needs full history for "last updated" timestamps
+
+      - name: Install Mintlify CLI
+        run: npm install -g mintlify
+
+      - name: Validate docs
+        run: mintlify broken-links
+        working-directory: docs/
+
+      - name: Deploy to Mintlify
+        run: mintlify deploy
+        working-directory: docs/
+        env:
+          MINTLIFY_API_KEY: ${{ secrets.MINTLIFY_API_KEY }}
