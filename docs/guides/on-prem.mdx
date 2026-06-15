@@ -1,0 +1,68 @@
+---
+title: On-Prem Deployment
+description: Use the SDK with air-gapped, on-premise KiteFishAI deployments.
+---
+
+## Overview
+
+KiteFishAI is designed for regulated enterprises that cannot send data to external APIs. The Python SDK works identically against an on-prem deployment — just point it at your internal host.
+
+## Configuration
+
+```python
+import kitefishai
+
+client = kitefishai.Client(
+    api_key="kf-...",
+    base_url="https://your-internal-host/v1",
+)
+```
+
+Or via environment variables:
+
+```bash
+export KITEFISH_API_KEY="kf-..."
+export KITEFISH_BASE_URL="https://your-internal-host/v1"
+```
+
+```python
+client = kitefishai.Client()  # picks up both env vars
+```
+
+## Timeout tuning
+
+On-prem hardware may have different latency characteristics. Tune accordingly:
+
+```python
+client = kitefishai.Client(
+    api_key="kf-...",
+    base_url="https://your-internal-host/v1",
+    timeout=120.0,
+    max_retries=3,
+)
+```
+
+## TLS / self-signed certificates
+
+If your internal deployment uses a self-signed certificate, pass a custom `httpx` client:
+
+```python
+import httpx
+import kitefishai
+
+http_client = httpx.Client(verify="/path/to/internal-ca.crt")
+
+client = kitefishai.Client(
+    api_key="kf-...",
+    base_url="https://your-internal-host/v1",
+    http_client=http_client,
+)
+```
+
+<Warning>
+Do not set `verify=False` in production. Always use a proper CA bundle.
+</Warning>
+
+## Data residency
+
+All data stays within your premises. No telemetry or usage data is sent to KiteFishAI servers when running on-prem. This satisfies requirements under RBI, IRDAI, and India's DPDP Act 2023.

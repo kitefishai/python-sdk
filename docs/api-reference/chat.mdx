@@ -1,0 +1,102 @@
+---
+title: Chat
+description: API reference for client.chat
+---
+
+## `client.chat.complete()`
+
+Send a chat completion request and return the full response.
+
+```python
+response = client.chat.complete(
+    model="kf-reasoning-10b",
+    messages=[{"role": "user", "content": "Hello"}],
+)
+```
+
+### Parameters
+
+<ParamField path="model" type="str" required>
+  Model ID. Example: `"kf-reasoning-10b"`.
+</ParamField>
+
+<ParamField path="messages" type="List[dict]" required>
+  Conversation history as a list of `{"role": ..., "content": ...}` dicts.
+  Roles: `"user"`, `"assistant"`, `"system"`.
+</ParamField>
+
+<ParamField path="system" type="str" optional>
+  System prompt. Prepended automatically as a `system` message.
+</ParamField>
+
+<ParamField path="max_tokens" type="int" optional>
+  Maximum tokens to generate. Default `1024`.
+</ParamField>
+
+<ParamField path="temperature" type="float" optional>
+  Sampling temperature between `0.0` and `2.0`. Default `0.7`.
+</ParamField>
+
+<ParamField path="top_p" type="float" optional>
+  Nucleus sampling probability. Default `1.0`.
+</ParamField>
+
+<ParamField path="extra" type="dict" optional>
+  Any additional parameters passed through to the API.
+</ParamField>
+
+### Returns: `ChatCompletion`
+
+| Field     | Type             | Description                    |
+|-----------|------------------|--------------------------------|
+| `id`      | `str`            | Request ID                     |
+| `model`   | `str`            | Model used                     |
+| `choices` | `List[Choice]`   | Generated responses            |
+| `usage`   | `Usage` or None  | Token usage                    |
+
+Each `Choice`:
+
+| Field           | Type      | Description                  |
+|-----------------|-----------|------------------------------|
+| `index`         | `int`     | Index in choices list        |
+| `message`       | `Message` | The generated message        |
+| `finish_reason` | `str`     | Why generation stopped       |
+
+`Message` has `role` and `content` fields.
+
+---
+
+## `client.chat.stream()`
+
+Send a streaming chat request. Returns a `ChatStream` context manager.
+
+```python
+with client.chat.stream(
+    model="kf-reasoning-10b",
+    messages=[{"role": "user", "content": "Hello"}],
+) as stream:
+    for chunk in stream:
+        print(chunk.delta, end="", flush=True)
+```
+
+### Parameters
+
+Same as `complete()`.
+
+### Returns: `ChatStream`
+
+Use as a context manager and iterate over `StreamChunk` objects.
+
+| Method              | Returns | Description                              |
+|---------------------|---------|------------------------------------------|
+| `__iter__`          | chunks  | Yields `StreamChunk` objects             |
+| `get_final_text()`  | `str`   | Full concatenated text after iteration   |
+
+Each `StreamChunk`:
+
+| Field           | Type           | Description                       |
+|-----------------|----------------|-----------------------------------|
+| `id`            | `str`          | Request ID                        |
+| `model`         | `str`          | Model used                        |
+| `delta`         | `str`          | Text content of this chunk        |
+| `finish_reason` | `str` or None  | `"stop"` on the final chunk       |

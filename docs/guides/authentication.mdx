@@ -1,0 +1,68 @@
+---
+title: Authentication
+description: How to authenticate with the KiteFishAI API.
+---
+
+## API Keys
+
+All requests require an API key. Keys are prefixed with `kf-` and can be created from the [dashboard](https://kitefishai.com/dashboard).
+
+## Option 1 — Pass directly
+
+```python
+import kitefishai
+
+client = kitefishai.Client(api_key="kf-...")
+```
+
+## Option 2 — Environment variable (recommended)
+
+Set `KITEFISH_API_KEY` in your environment and the client picks it up automatically:
+
+```bash
+export KITEFISH_API_KEY="kf-..."
+```
+
+```python
+client = kitefishai.Client()
+```
+
+This is the recommended approach. It keeps credentials out of source code.
+
+## Option 3 — `.env` file
+
+Use a library like [`python-dotenv`](https://pypi.org/project/python-dotenv/):
+
+```bash
+# .env
+KITEFISH_API_KEY=kf-...
+```
+
+```python
+from dotenv import load_dotenv
+load_dotenv()
+
+import kitefishai
+client = kitefishai.Client()
+```
+
+<Warning>
+Never commit API keys to source control. Add `.env` to your `.gitignore`.
+</Warning>
+
+## On-prem deployments
+
+For air-gapped enterprise deployments, override the base URL:
+
+```python
+client = kitefishai.Client(
+    api_key="kf-...",
+    base_url="https://your-internal-host/v1",
+)
+```
+
+Or via environment:
+
+```bash
+export KITEFISH_BASE_URL="https://your-internal-host/v1"
+```

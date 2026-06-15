@@ -1,0 +1,70 @@
+---
+title: Quickstart
+description: Get up and running with the KiteFishAI Python SDK in under 5 minutes.
+---
+
+## Install
+
+```bash
+pip install kitefishai
+```
+
+## Get an API key
+
+Sign in at [kitefishai.com/dashboard](https://kitefishai.com/dashboard) and create an API key. Keys start with `kf-`.
+
+## Your first request
+
+```python
+import kitefishai
+
+client = kitefishai.Client(api_key="kf-...")
+
+response = client.chat.complete(
+    model="kf-reasoning-10b",
+    messages=[
+        {"role": "user", "content": "Summarise the DPDP Act 2023."}
+    ],
+)
+
+print(response.choices[0].message.content)
+```
+
+## Streaming
+
+```python
+with client.chat.stream(
+    model="kf-reasoning-10b",
+    messages=[{"role": "user", "content": "Explain claim settlement."}],
+) as stream:
+    for chunk in stream:
+        print(chunk.delta, end="", flush=True)
+```
+
+## Embeddings
+
+```python
+result = client.embeddings.create(
+    model="minnow-em-v1",
+    input=["query: what is KYC?"],
+)
+
+print(result.data[0].embedding[:5])
+```
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Authentication" icon="key" href="/guides/authentication">
+    API keys and environment variables
+  </Card>
+  <Card title="Streaming" icon="bolt" href="/guides/streaming">
+    Stream chat responses token by token
+  </Card>
+  <Card title="Embeddings" icon="layers" href="/guides/embeddings">
+    Generate embeddings with Minnow-Em
+  </Card>
+  <Card title="On-Prem Deployment" icon="server" href="/guides/on-prem">
+    Use the SDK with air-gapped deployments
+  </Card>
+</CardGroup>

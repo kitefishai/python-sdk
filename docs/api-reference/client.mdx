@@ -1,0 +1,70 @@
+---
+title: Client
+description: The main KiteFishAI client class.
+---
+
+## Import
+
+```python
+import kitefishai
+
+client = kitefishai.Client(api_key="kf-...")
+```
+
+## Constructor
+
+```python
+kitefishai.Client(
+    api_key=None,
+    base_url=None,
+    timeout=60.0,
+    max_retries=2,
+    http_client=None,
+)
+```
+
+### Parameters
+
+<ParamField path="api_key" type="str" optional>
+  Your KiteFishAI API key. Falls back to the `KITEFISH_API_KEY` environment variable. Raises `AuthenticationError` if neither is set.
+</ParamField>
+
+<ParamField path="base_url" type="str" optional>
+  API base URL. Defaults to `https://api.kitefishai.com/v1`. Falls back to `KITEFISH_BASE_URL` env var. Override for on-prem deployments.
+</ParamField>
+
+<ParamField path="timeout" type="float" optional>
+  Request timeout in seconds. Default `60.0`.
+</ParamField>
+
+<ParamField path="max_retries" type="int" optional>
+  Number of retries on network errors and timeouts. Default `2`. Set to `0` to disable.
+</ParamField>
+
+<ParamField path="http_client" type="httpx.Client" optional>
+  Bring your own `httpx.Client` for custom TLS, proxies, or connection pooling.
+</ParamField>
+
+## Resources
+
+| Attribute          | Type          | Description             |
+|--------------------|---------------|-------------------------|
+| `client.chat`      | `Chat`        | Chat completions        |
+| `client.embeddings`| `Embeddings`  | Text embeddings         |
+
+## Context manager
+
+The client can be used as a context manager — the underlying HTTP connection is closed automatically:
+
+```python
+with kitefishai.Client(api_key="kf-...") as client:
+    response = client.chat.complete(...)
+```
+
+## Manual close
+
+```python
+client = kitefishai.Client(api_key="kf-...")
+# ... use client ...
+client.close()
+```

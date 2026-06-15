@@ -1,0 +1,74 @@
+---
+title: Streaming
+description: Stream chat responses token by token.
+---
+
+## Overview
+
+Streaming returns tokens as they are generated rather than waiting for the full response. This gives users a faster perceived experience — important for long outputs like document summaries or policy analysis.
+
+## Basic streaming
+
+```python
+import kitefishai
+
+client = kitefishai.Client(api_key="kf-...")
+
+with client.chat.stream(
+    model="kf-reasoning-10b",
+    messages=[{"role": "user", "content": "Summarise the RBI Master Directions on KYC."}],
+) as stream:
+    for chunk in stream:
+        print(chunk.delta, end="", flush=True)
+print()  # newline after stream ends
+```
+
+## Get the full text after streaming
+
+```python
+with client.chat.stream(
+    model="kf-reasoning-10b",
+    messages=[{"role": "user", "content": "List IRDAI compliance requirements."}],
+) as stream:
+    for chunk in stream:
+        print(chunk.delta, end="", flush=True)
+
+full_text = stream.get_final_text()
+print(f"\nTotal characters: {len(full_text)}")
+```
+
+## StreamChunk fields
+
+Each chunk yielded by the iterator has:
+
+| Field           | Type            | Description                          |
+|-----------------|-----------------|--------------------------------------|
+| `id`            | `str`           | Request ID                           |
+| `model`         | `str`           | Model that generated the chunk       |
+| `delta`         | `str`           | The text content of this chunk       |
+| `finish_reason` | `str` or `None` | `"stop"` on the final chunk          |
+
+## With a system prompt
+
+```python
+with client.chat.stream(
+    model="kf-reasoning-10b",
+    system="You are a BFSI compliance assistant. Be concise and cite regulations.",
+    messages=[{"role": "user", "content": "What is Form 60?"}],
+) as stream:
+    for chunk in stream:
+        print(chunk.delta, end="", flush=True)
+```
+
+## Collecting chunks manually
+
+```python
+chunks = []
+
+with client.chat.stream(model="kf-reasoning-10b", messages=[...]) as stream:
+    for chunk in stream:
+        chunks.append(chunk)
+
+print(f"Received {len(chunks)} chunks")
+print("".join(c.delta for c in chunks))
+```

@@ -1,0 +1,72 @@
+---
+title: Error Handling
+description: Handle errors gracefully in the KiteFishAI Python SDK.
+---
+
+## Exception hierarchy
+
+```
+KiteFishAIError
+├── AuthenticationError   # 401 — invalid or missing API key
+├── RateLimitError        # 429 — too many requests
+├── NotFoundError         # 404 — model or resource not found
+└── APIError              # any other non-2xx response
+```
+
+## Basic pattern
+
+```python
+import kitefishai
+
+client = kitefishai.Client(api_key="kf-...")
+
+try:
+    response = client.chat.complete(
+        model="kf-reasoning-10b",
+        messages=[{"role": "user", "content": "Hello"}],
+    )
+except kitefishai.AuthenticationError:
+    print("Invalid API key — check KITEFISH_API_KEY")
+except kitefishai.RateLimitError:
+    print("Rate limit hit — back off and retry")
+except kitefishai.NotFoundError as e:
+    print(f"Model not found: {e}")
+except kitefishai.APIError as e:
+    print(f"API error {e.status_code}: {e.message}")
+except kitefishai.KiteFishAIError as e:
+    print(f"SDK error: {e}")
+```
+
+## Timeouts
+
+The default timeout is 60 seconds. Increase it for long completions:
+
+```python
+client = kitefishai.Client(
+    api_key="kf-...",
+    timeout=120.0,
+)
+```
+
+If a request times out, a `KiteFishAIError` is raised with a descriptive message.
+
+## Retries
+
+The SDK automatically retries on timeout and network errors. Default is 2 retries:
+
+```python
+client = kitefishai.Client(
+    api_key="kf-...",
+    max_retries=3,
+)
+```
+
+To disable retries:
+
+```python
+client = kitefishai.Client(api_key="kf-...", max_retries=0)
+```
+
+<Note>
+Retries are only attempted on network-level failures and timeouts — not on API errors like 401 or 429.
+</Note>

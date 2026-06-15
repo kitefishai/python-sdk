@@ -1,0 +1,49 @@
+---
+title: Installation
+description: Install and set up the KiteFishAI Python SDK.
+---
+
+## Requirements
+
+- Python 3.12 or higher
+- pip or poetry
+
+## pip
+
+```bash
+pip install kitefishai
+```
+
+## poetry
+
+```bash
+poetry add kitefishai
+```
+
+## Verify installation
+
+```python
+import kitefishai
+print(kitefishai.__version__)
+```
+
+## Optional: set your API key globally
+
+Rather than passing `api_key` every time, export it as an environment variable:
+
+```bash
+export KITEFISH_API_KEY="kf-..."
+```
+
+Then the client picks it up automatically:
+
+```python
+client = kitefishai.Client()  # reads KITEFISH_API_KEY
+```
+
+For on-prem deployments you can also set the base URL:
+
+```bash
+export KITEFISH_API_KEY="kf-..."
+export KITEFISH_BASE_URL="https://your-internal-host/v1"
+```

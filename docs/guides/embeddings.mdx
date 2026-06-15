@@ -1,0 +1,70 @@
+---
+title: Embeddings
+description: API reference for client.embeddings
+---
+
+## `client.embeddings.create()`
+
+Generate embeddings for one or more input strings.
+
+```python
+result = client.embeddings.create(
+    model="minnow-em-v1",
+    input="query: what is DPDP?",
+)
+```
+
+### Parameters
+
+<ParamField path="model" type="str" required>
+  Embedding model ID. Example: `"minnow-em-v1"`.
+</ParamField>
+
+<ParamField path="input" type="str | List[str]" required>
+  A single string or a list of strings to embed.
+</ParamField>
+
+<ParamField path="dimensions" type="int" optional>
+  Request a specific MRL dimension. Supported values: `896`, `512`, `256`, `128`, `64`.
+  Defaults to the model's native dimension (`896` for `minnow-em-v1`).
+</ParamField>
+
+<ParamField path="encoding_format" type="str" optional>
+  `"float"` (default) or `"base64"`.
+</ParamField>
+
+<ParamField path="extra" type="dict" optional>
+  Any additional parameters passed through to the API.
+</ParamField>
+
+### Returns: `EmbeddingResponse`
+
+| Field   | Type              | Description                    |
+|---------|-------------------|--------------------------------|
+| `model` | `str`             | Model used                     |
+| `data`  | `List[Embedding]` | One item per input string      |
+| `usage` | `Usage` or None   | Token counts                   |
+
+Each `Embedding`:
+
+| Field       | Type          | Description                          |
+|-------------|---------------|--------------------------------------|
+| `index`     | `int`         | Position in the input list           |
+| `embedding` | `List[float]` | The dense embedding vector           |
+| `object`    | `str`         | Always `"embedding"`                 |
+
+### Example — batch with MRL
+
+```python
+result = client.embeddings.create(
+    model="minnow-em-v1",
+    input=[
+        "query: insurance claim process",
+        "passage: Claims must be filed within 30 days...",
+    ],
+    dimensions=256,
+)
+
+for item in result.data:
+    print(f"[{item.index}] dim={len(item.embedding)}")
+```

@@ -1,0 +1,66 @@
+{
+  "$schema": "https://mintlify.com/schema.json",
+  "name": "KiteFishAI Python SDK",
+  "logo": {
+    "dark": "/logo/kitefish-dark.png",
+    "light": "/logo/kitefish-light.png"
+  },
+  "favicon": "/favicon.ico",
+  "colors": {
+    "primary": "#E8751A",
+    "light": "#E8751A",
+    "dark": "#1B3A5C"
+  },
+  "topbarLinks": [
+    {
+      "name": "kitefishai.com",
+      "url": "https://kitefishai.com"
+    }
+  ],
+  "topbarCtaButton": {
+    "name": "Get API Key",
+    "url": "https://kitefishai.com/dashboard"
+  },
+  "anchors": [
+    {
+      "name": "GitHub",
+      "icon": "github",
+      "url": "https://github.com/KiteFishAI/kitefishai-python"
+    },
+    {
+      "name": "HuggingFace",
+      "icon": "cube",
+      "url": "https://huggingface.co/KiteFishAI"
+    }
+  ],
+  "navigation": [
+    {
+      "group": "Getting Started",
+      "pages": [
+        "guides/quickstart",
+        "guides/installation",
+        "guides/authentication",
+        "guides/error-handling"
+      ]
+    },
+    {
+      "group": "Guides",
+      "pages": [
+        "guides/streaming",
+        "guides/embeddings",
+        "guides/on-prem"
+      ]
+    },
+    {
+      "group": "API Reference",
+      "pages": [
+        "api-reference/client",
+        "api-reference/chat",
+        "api-reference/embeddings"
+      ]
+    }
+  ],
+  "footerSocials": {
+    "linkedin": "https://linkedin.com/company/kitefishai"
+  }
+}
