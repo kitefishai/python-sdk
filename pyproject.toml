@@ -26,7 +26,7 @@ ruff = "*"
 mypy = "*"
 
 
-[project.urls]
+[tool.poetry.urls]
 Homepage = "https://kitefishai.com"
 Documentation = "https://kitefishai.com/docs/sdk"
 Repository = "https://github.com/KiteFishAI/kitefishai-python"
