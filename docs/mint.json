@@ -2,8 +2,8 @@
   "$schema": "https://mintlify.com/schema.json",
   "name": "KiteFishAI Python SDK",
   "logo": {
-    "dark": "/logo/kitefish-dark.png",
-    "light": "/logo/kitefish-light.png"
+    "dark": "/logo/logo.png",
+    "light": "/logo/logo.png"
   },
   "favicon": "/favicon.ico",
   "colors": {
