@@ -24,9 +24,3 @@ jobs:
       - name: Validate docs
         run: mintlify broken-links
         working-directory: docs/
-
-      - name: Deploy to Mintlify
-        run: mintlify deploy
-        working-directory: docs/
-        env:
-          MINTLIFY_API_KEY: ${{ secrets.MINTLIFY_API_KEY }}
