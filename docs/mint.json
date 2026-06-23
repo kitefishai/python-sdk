@@ -19,7 +19,7 @@
   ],
   "topbarCtaButton": {
     "name": "Get API Key",
-    "url": "https://kitefishai.com/dashboard"
+    "url": "https://platform.kitefishai.com/login"
   },
   "anchors": [
     {
